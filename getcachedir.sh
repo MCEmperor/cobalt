@@ -1,0 +1,9 @@
+#!/bin/bash
+
+TEMP_DIR="${TMPDIR:-${TEMP:-${TMP:-/tmp}}}"
+GLOBAL_CACHE_DIR="${TEMP_DIR}/.cobalt/cache"
+PROJECT_ROOT_DIR=$1
+PROJECT_CACHE_FOLDER=$(echo -n "${PROJECT_ROOT_DIR}" | md5sum | cut -d' ' -f 1)
+PROJECT_CACHE_DIR="${GLOBAL_CACHE_DIR}/${PROJECT_CACHE_FOLDER}"
+
+echo "${PROJECT_CACHE_DIR}"
