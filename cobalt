@@ -14,6 +14,7 @@ function main {
 
     case $1 in
 
+        # One of the build targets
         clean|compile|deploy|package)
             build $*
             local exitCode=$?
@@ -34,15 +35,15 @@ function main {
     esac
 }
 
+# Builds the build target (one of 'clean', 'compile', 'deploy' or 'package')
 function build {
-
     # Build project cache, if necessary
     export COBALT_BIN_DIR PROJECT_ROOT_DIR PROJECT_CACHE_DIR; make -s --directory "${PROJECT_ROOT_DIR}" -f "${COBALT_BIN_DIR}/project.makefile"
-
     # Build the sources
     export COBALT_BIN_DIR; make -s --directory "${PROJECT_ROOT_DIR}" -f "${PROJECT_CACHE_DIR}/cobalt" $* 2>/dev/null
 }
 
+# Shows the help message
 function help {
     echo "Usage: cobalt [OPTION...] BUILDTARGET"
     echo "Runs the Cobalt build tool with the specified target"
