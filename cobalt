@@ -16,9 +16,11 @@ function main {
 
         clean|compile|deploy|package)
             build $*
-            if [ $? -eq 0 ]; then
+            local exitCode=$?
+            if [ ${exitCode} -eq 0 ]; then
                 echo "Done"
             fi
+            exit ${exitCode}
             ;;
 
         "--help")
