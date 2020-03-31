@@ -33,10 +33,11 @@ compile: $(LOBJECTS) $(UOBJECTS)
 
 package: compile
 	@echo Building package {{packageFilename}}
-	@$(CBLUTIL) -lib -c "build0" -o "$(TARGET_DIR)/{{packageFilename}}.acu" $(OBJECT_DIR)/*.acu
+	@$(CBLUTIL) -lib -o "$(TARGET_DIR)/{{packageFilename}}.acu" $(OBJECT_DIR)/*.acu
 
 clean:
-	@rm -r target
+	@echo "Deleting build directory"
+	@rm -fr target
 
 # Targets with special compile options
 {{profiledCompileOptions}}
