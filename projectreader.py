@@ -1,5 +1,6 @@
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 from projectcontext import ProjectContext
 
@@ -49,13 +50,19 @@ class ProjectReader:
 			package = {
 				"filename": project_file_package.get('filename', self.root_dir.stem),
 				"name": project_file_package.get('name', self.root_dir.stem),
-				"version": project_file_package.get('version', "1")
+				"version": project_file_package.get('version', "1"),
 			}
+
+			project_file_deploy_node = cobalt.get('deploy', {})
+			deploy = {
+				"fingerprint": project_file_deploy_node.get('fingerprint', 'git-commit-hash')
+			}
+
 			dependencies = cobalt.get('dependencies', {})
 			project_context.package = package
+			project_context.deploy = deploy
 			project_context.dependencies = dependencies
-
-		return project_context
+			return project_context
 
 	def md5(self, file : Path):
 		hash_md5 = hashlib.md5()

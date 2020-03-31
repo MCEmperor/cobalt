@@ -10,7 +10,8 @@ LOBJECTS := $(notdir $(LSOURCES:.cbl=.acu))
 USOURCES := $(wildcard $(SOURCE_DIR)/*.CBL)
 UOBJECTS := $(notdir $(USOURCES:.CBL=.acu))
 
-COMPILE_OPTIONS := -x -w -Cr -D1 -Di -Dz -Zz -Zl -Z91 -Sr -Vc
+COMPILE_OPTIONS := {{compileOptions}}
+FINGERPRINT_SUPPLIER := {{fingerprintSupplier}}
 
 # Detect compiler
 ifeq ($(OS),Windows_NT)
@@ -27,13 +28,17 @@ vpath %.d $(COPYBOOK_DEPENDENCY_DIR)
 vpath % $(COPYBOOK_DIR)
 
 # Interpret the following targets as non-files
-.PHONY: compile package clean
+.PHONY: compile package deploy clean
 
 compile: $(LOBJECTS) $(UOBJECTS)
 
 package: compile
 	@echo Building package {{packageFilename}}
 	@$(CBLUTIL) -lib -o "$(TARGET_DIR)/{{packageFilename}}.acu" $(OBJECT_DIR)/*.acu
+
+deploy: clean compile
+	@echo "Building deploy-ready package {{packageFilename}}"
+	@$(CBLUTIL) -lib -c "$(shell $(COBALT_BIN_DIR)/fingerprint.sh $(FINGERPRINT_SUPPLIER))" -o "$(TARGET_DIR)/{{packageFilename}}.acu" $(OBJECT_DIR)/*.acu
 
 clean:
 	@echo "Deleting build directory"

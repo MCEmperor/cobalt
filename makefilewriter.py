@@ -26,7 +26,7 @@ class MakefileWriter:
 		package_filename = self.project_context.package['filename']
 		default_compile_options = self.project_context.default_compiler_options
 		line = line.replace('{{packageFilename}}', package_filename)
+		line = line.replace('{{fingerprintSupplier}}', self.project_context.deploy['fingerprint'])
 		line = line.replace('{{compileOptions}}', default_compile_options)
-
 		line = line.replace('{{profiledCompileOptions}}', self.makefile_compile_profiles)
 		return line
