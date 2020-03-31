@@ -10,8 +10,47 @@ if [ ! -f "${PROJECT_ROOT_DIR}/cobalt.json" ]; then
     exit 2
 fi
 
-# Build project cache, if necessary
-export COBALT_BIN_DIR PROJECT_ROOT_DIR PROJECT_CACHE_DIR; make -s --directory "${PROJECT_ROOT_DIR}" -f "${COBALT_BIN_DIR}/project.makefile"
+function main {
 
-# Build the sources
-export COBALT_BIN_DIR; make -s --directory "${PROJECT_ROOT_DIR}" -f "${PROJECT_CACHE_DIR}/cobalt" $*
+    case $1 in
+
+        clean|compile|deploy|package)
+            build $*
+            echo "Done"
+            ;;
+
+        "--help")
+            help
+            ;;
+
+        *)
+            echo "ERROR: Invalid build target"
+            exit 2
+            ;;
+    esac
+}
+
+function build {
+
+    # Build project cache, if necessary
+    export COBALT_BIN_DIR PROJECT_ROOT_DIR PROJECT_CACHE_DIR; make -s --directory "${PROJECT_ROOT_DIR}" -f "${COBALT_BIN_DIR}/project.makefile"
+
+    # Build the sources
+    export COBALT_BIN_DIR; make -s --directory "${PROJECT_ROOT_DIR}" -f "${PROJECT_CACHE_DIR}/cobalt" $*
+}
+
+function help {
+    echo "Usage: cobalt [OPTION...] BUILDTARGET"
+    echo "Runs the Cobalt build tool with the specified target"
+    echo ""
+    echo "OPTIONS:"
+    echo "--help   Show this help and exit"
+    echo ""
+    echo "BUILDTARGET: Builds the specified target. Valid build targets are:"
+    echo "  clean     Cleans up the project by removing the target directory"
+    echo "  compile   Compiles all files"
+    echo "  deploy    Cleans up the project, compiles all files and builds the package"
+    echo "  package   Compiles all files and creates the package"
+}
+
+main $*
