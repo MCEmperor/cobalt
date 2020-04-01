@@ -85,7 +85,7 @@ directory.
 
 Cobalt does not build all programs when it is executed. Instead, only source code which is out of date is being updated.
 Internally, Cobalt uses **Make** to determine whether a file should be updated. First, the project file is checked and
-a `Makefile` is generated in some cache directory. Then Cobalt lets Make build the necessary source files.
+a `Makefile` is generated in some cache directory (default `/tmp/.cobalt/cache`). Then Cobalt lets Make build the necessary source files.
 
 # How to use `cobalt`?
 
@@ -93,5 +93,7 @@ Cobalt currently has three built-in targets: `compile`, `package` and `clean`.
 
 * `compile` compiles all source files.
 * `package` first compiles all source files, and then generates a package from the compiled files.
+* `deploy` first compiles all source files, then generates a deploy-ready package from the compiled files.
 * `clean` cleans up the project directory by simply removing the `target` directory.
 
+Use `cobalt --help` to get more details.
