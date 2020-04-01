@@ -37,6 +37,9 @@ A project file looks like this:
             "filename": "test-cobol",
             "name": "my-cobol-application",
             "version": "1.0"
+        },
+        "deploy": {
+            "fingerprint": "git-commit-hash"
         }
     }
 
@@ -53,6 +56,11 @@ used to compile the programs defined in the `include` property, which is an arra
 program name
 * The `package` property declares how the package should be made. Currently, only the `filename` property is used during
 the build, and denotes the package filename.
+* The `deploy` property declares how the deploy-ready package should be made. Currently, the filename is the same as the
+filename declared within the package property. The `fingerprint` property declares the *fingerprint provider*. A
+fingerprint provider is a mechanism to provide some form of identification for the package to be built. The default
+provider is `git-commit-hash`, which takes the Git commit hash of the current folder under version control, and injects
+it into the comment section of the package.
 
 The Cobalt build tool assumes a certain directory structure:
 
@@ -70,8 +78,8 @@ The Cobalt build tool assumes a certain directory structure:
 
 The project file is located in the root directory. The directory `src/main/cobol` contains all programs to be compiled.
 The `src/main/cobol/copybook` directory contains the copybooks. The `src/main/resources` directory contains all
-resources necessary to run the programs. The `src/test` directory maintains the same structure as the `src/main` directory, but is intended for test programs to
-be run.
+resources necessary to run the programs. The `src/test` directory maintains the same structure as the `src/main`
+directory, but is intended for test programs to be run.
 
 When the targets are being built, a `target` directory is created, with a few folders to store intermediate artifacts.
 For instance, for each program being built, the `copybook-dependencies` directory contains a file containing a list with
@@ -85,7 +93,8 @@ directory.
 
 Cobalt does not build all programs when it is executed. Instead, only source code which is out of date is being updated.
 Internally, Cobalt uses **Make** to determine whether a file should be updated. First, the project file is checked and
-a `Makefile` is generated in some cache directory (default `/tmp/.cobalt/cache`). Then Cobalt lets Make build the necessary source files.
+a `Makefile` is generated in some cache directory (default `/tmp/.cobalt/cache`). Then Cobalt lets Make build the
+necessary source files.
 
 # How to use `cobalt`?
 
