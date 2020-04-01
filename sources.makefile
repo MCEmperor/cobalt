@@ -57,16 +57,16 @@ clean:
 	@echo "Generating dependencies"
 	@echo -n "$@:" > "$(COPYBOOK_DEPENDENCY_DIR)/$(basename $@).d"
 	@$(COMPILER) -Ms -Sp "$(COPYBOOK_DIR)" "$(SOURCE_DIR)/$(basename $@).cbl" | tr -d '\r' | tr '\n' ':' | "$(COBALT_BIN_DIR)/ccbltr.sh" >> "$(COPYBOOK_DEPENDENCY_DIR)/$(basename $@).d"
-	@echo "Compiling $@..."
+	@echo "Compiling $@"
 	@$(COMPILER) $(COMPILE_OPTIONS) -Sp "$(COPYBOOK_DIR)" -o "$(OBJECT_DIR)/$@" "$<"
 
 %.acu: %.CBL
 	@mkdir -p "$(COPYBOOK_DEPENDENCY_DIR)"
 	@mkdir -p "$(OBJECT_DIR)"
-	@echo "Generating dependencies..."
+	@echo "Generating dependencies"
 	@echo -n "$@:" > "$(COPYBOOK_DEPENDENCY_DIR)/$(basename $@).d"
 	@$(COMPILER) -Ms -Sp "$(COPYBOOK_DIR)" "$(SOURCE_DIR)/$(basename $@).CBL" | tr -d '\r' | tr '\n' ':' | "$(COBALT_BIN_DIR)/ccbltr.sh" >> "$(COPYBOOK_DEPENDENCY_DIR)/$(basename $@).d"
-	@echo "Compiling $@..."
+	@echo "Compiling $@"
 	@$(COMPILER) $(COMPILE_OPTIONS) -Sp "$(COPYBOOK_DIR)" -o "$(OBJECT_DIR)/$@" "$<"
 
 sinclude $(COPYBOOK_DEPENDENCY_DIR)/*.d
