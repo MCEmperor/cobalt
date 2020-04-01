@@ -54,7 +54,7 @@ clean:
 %.acu: %.cbl
 	@mkdir -p '$(COPYBOOK_DEPENDENCY_DIR)'
 	@mkdir -p '$(OBJECT_DIR)'
-	@echo 'Generating dependencies'
+	@echo 'Generating dependencies for $@'
 	@echo -n '$@:' > '$(COPYBOOK_DEPENDENCY_DIR)/$(basename $@).d'
 	@$(COMPILER) -Ms -Sp '$(COPYBOOK_DIR)' '$(SOURCE_DIR)/$(basename $@).cbl' | tr -d '\r' | tr '\n' ':' | '$(COBALT_BIN_DIR)/ccbltr.sh' >> '$(COPYBOOK_DEPENDENCY_DIR)/$(basename $@).d'
 	@echo 'Compiling $@'
@@ -63,7 +63,7 @@ clean:
 %.acu: %.CBL
 	@mkdir -p '$(COPYBOOK_DEPENDENCY_DIR)'
 	@mkdir -p '$(OBJECT_DIR)'
-	@echo 'Generating dependencies'
+	@echo 'Generating dependencies for $@'
 	@echo -n '$@:' > '$(COPYBOOK_DEPENDENCY_DIR)/$(basename $@).d'
 	@$(COMPILER) -Ms -Sp '$(COPYBOOK_DIR)' '$(SOURCE_DIR)/$(basename $@).CBL' | tr -d '\r' | tr '\n' ':' | '$(COBALT_BIN_DIR)/ccbltr.sh' >> '$(COPYBOOK_DEPENDENCY_DIR)/$(basename $@).d'
 	@echo 'Compiling $@'
