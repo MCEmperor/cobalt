@@ -40,7 +40,7 @@ function build {
     # Build project cache, if necessary
     export COBALT_BIN_DIR PROJECT_ROOT_DIR PROJECT_CACHE_DIR; make -s --directory "${PROJECT_ROOT_DIR}" -f "${COBALT_BIN_DIR}/project.makefile"
     # Build the sources
-    export COBALT_BIN_DIR; make -s -j --directory "${PROJECT_ROOT_DIR}" -f "${PROJECT_CACHE_DIR}/cobalt" $* 2>/dev/null
+    export COBALT_BIN_DIR; make -s -j --directory "${PROJECT_ROOT_DIR}" -f "${PROJECT_CACHE_DIR}/cobalt" $*
 }
 
 # Shows the help message
