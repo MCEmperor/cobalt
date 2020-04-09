@@ -94,8 +94,9 @@ directory.
 
 Cobalt does not build all programs when it is executed. Instead, only source code which is out of date is being updated.
 Internally, Cobalt uses **Make** to determine whether a file should be updated. First, the project file is checked and
-a `Makefile` is generated in some cache directory (default `/tmp/.cobalt/cache`). Then Cobalt lets Make build the
-necessary source files.
+a `Makefile` is generated in some cache directory for the project (default `/tmp/.cobalt/cache/project_dir_hash/`, where
+*project_dir_hash* is a hash associated with the directory of the project). Then Cobalt lets Make build the necessary
+source files.
 
 # How to use `cobalt`?
 

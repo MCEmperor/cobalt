@@ -24,6 +24,10 @@ function main {
             exit ${exitCode}
             ;;
 
+        "--clearcache")
+            clearcache
+            ;;
+
         "--help")
             help
             ;;
@@ -43,13 +47,21 @@ function build {
     export COBALT_BIN_DIR; make -s -j --directory "${PROJECT_ROOT_DIR}" -f "${PROJECT_CACHE_DIR}/cobalt" $*
 }
 
+# Clears the project cache by deleting the project's cache directory
+function clearcache {
+    echo "Clearing cache in ${PROJECT_CACHE_DIR}"
+    rm -fr ${PROJECT_CACHE_DIR}
+    echo "Done"
+}
+
 # Shows the help message
 function help {
-    echo "Usage: cobalt [OPTION...] BUILDTARGET"
+    echo "Usage: cobalt [OPTIONS...] BUILDTARGET"
     echo "Runs the Cobalt build tool with the specified target"
     echo ""
     echo "OPTIONS:"
-    echo "--help   Show this help and exit"
+    echo "--help         Show this help and exit"
+    echo "--clearcache   Clears the cache"
     echo ""
     echo "BUILDTARGET: Builds the specified target. Valid build targets are:"
     echo "  clean     Cleans up the project by removing the target directory"
