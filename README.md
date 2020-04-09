@@ -49,12 +49,13 @@ As you can see, its contents are just in JSON format.
 * `projectName` denotes the name of this project.
 * `namespace` declares that the project belongs to the specified namespace. This can be used to organize projects. The
 namespace declaration is currently not used by the build tool, but may be used in future versions.
-* `compile` declares how the source code should be compiled. The `options` key declares the default compiler options
-used to compile programs.
-* `profiles` contains an array with compiler profiles for different programs to be compiled. Each element is an object
-containing the properties `options` and `include`. The `options` property defines an alternative set of compiler options
-used to compile the programs defined in the `include` property, which is an array of strings, each one containing a
-program name
+* `compile` declares how the source code should be compiled.
+    * The `options` key declares the default compiler options used to compile programs.
+    * `profiles` contains an array with compiler profiles for different programs to be compiled. Each element is an
+        object containing the properties `options` and `include`. The `options` property defines an alternative set of
+        compiler options used to compile the programs defined in the `include` property, which is an array of strings, 
+        each one containing a program name.
+    * The `fd` key is a boolean, and denotes whether *xfd* files should be generated.
 * The `package` property declares how the package should be made. Currently, only the `filename` property is used during
 the build, and denotes the package filename.
 * The `deploy` property declares how the deploy-ready package should be made. Currently, the filename is the same as the
