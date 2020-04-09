@@ -31,7 +31,8 @@ A project file looks like this:
                         "AnotherTerminalProgram"
                     ]
                 }
-            ]
+            ],
+            "fd": true
         },
         "package": {
             "filename": "test-cobol",

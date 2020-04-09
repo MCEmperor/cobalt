@@ -45,6 +45,9 @@ class ProjectReader:
 				})
 			project_context.compile_profiles = compile_profiles
 
+			# Capture fd flag
+			project_context.fd = compile_node.get('fd', False)
+
 			# Get the package contents defined in the project file
 			project_file_package = cobalt.get('package', {})
 			package = {

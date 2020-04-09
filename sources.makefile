@@ -2,8 +2,9 @@
 TARGET_DIR := target
 SOURCE_DIR := src/main/cobol
 COPYBOOK_DIR := src/main/cobol/copybook
-COPYBOOK_DEPENDENCY_DIR := $(TARGET_DIR)/copybook-dependencies
+COPYBOOK_DEPENDENCY_DIR := $(TARGET_DIR)/copybookdependencies
 OBJECT_DIR := $(TARGET_DIR)/objects
+FD_DIR := $(TARGET_DIR)/fd
 
 LSOURCES := $(wildcard $(SOURCE_DIR)/*.cbl)
 LOBJECTS := $(notdir $(LSOURCES:.cbl=.acu))
@@ -11,6 +12,7 @@ USOURCES := $(wildcard $(SOURCE_DIR)/*.CBL)
 UOBJECTS := $(notdir $(USOURCES:.CBL=.acu))
 
 COMPILE_OPTIONS := {{compileOptions}}
+COMPILE_FD_STRING := {{compileFdString}}
 FINGERPRINT_SUPPLIER := {{fingerprintSupplier}}
 
 # Detect compiler
@@ -54,19 +56,21 @@ clean:
 %.acu: %.cbl
 	@mkdir -p '$(COPYBOOK_DEPENDENCY_DIR)'
 	@mkdir -p '$(OBJECT_DIR)'
+	@mkdir -p '$(FD_DIR)'
 	@echo 'Generating dependencies for $@'
 	@echo -n '$@:' > '$(COPYBOOK_DEPENDENCY_DIR)/$(basename $@).d'
 	@$(COMPILER) -Ms -Sp '$(COPYBOOK_DIR)' '$(SOURCE_DIR)/$(basename $@).cbl' | tr -d '\r' | tr '\n' ':' | '$(COBALT_BIN_DIR)/ccbltr.sh' >> '$(COPYBOOK_DEPENDENCY_DIR)/$(basename $@).d'
 	@echo 'Compiling $@'
-	@$(COMPILER) $(COMPILE_OPTIONS) -Sp '$(COPYBOOK_DIR)' -o '$(OBJECT_DIR)/$@' '$<'
+	@$(COMPILER) $(COMPILE_FD_STRING) $(COMPILE_OPTIONS) -Sp '$(COPYBOOK_DIR)' -o '$(OBJECT_DIR)/$@' '$<'
 
 %.acu: %.CBL
 	@mkdir -p '$(COPYBOOK_DEPENDENCY_DIR)'
 	@mkdir -p '$(OBJECT_DIR)'
+	@mkdir -p '$(FD_DIR)'
 	@echo 'Generating dependencies for $@'
 	@echo -n '$@:' > '$(COPYBOOK_DEPENDENCY_DIR)/$(basename $@).d'
 	@$(COMPILER) -Ms -Sp '$(COPYBOOK_DIR)' '$(SOURCE_DIR)/$(basename $@).CBL' | tr -d '\r' | tr '\n' ':' | '$(COBALT_BIN_DIR)/ccbltr.sh' >> '$(COPYBOOK_DEPENDENCY_DIR)/$(basename $@).d'
 	@echo 'Compiling $@'
-	@$(COMPILER) $(COMPILE_OPTIONS) -Sp '$(COPYBOOK_DIR)' -o '$(OBJECT_DIR)/$@' '$<'
+	@$(COMPILER) $(COMPILE_FD_STRING) $(COMPILE_OPTIONS) -Sp '$(COPYBOOK_DIR)' -o '$(OBJECT_DIR)/$@' '$<'
 
 sinclude $(COPYBOOK_DEPENDENCY_DIR)/*.d
