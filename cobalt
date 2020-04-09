@@ -4,18 +4,13 @@ COBALT_BIN_DIR=$(dirname $(test -L "$0" && readlink "$0" || echo "$0"))
 PROJECT_ROOT_DIR=$(pwd)
 PROJECT_CACHE_DIR=$(${COBALT_BIN_DIR}/getcachedir.sh)
 
-# Check if the project root directory contains a Cobalt project file
-if [ ! -f "${PROJECT_ROOT_DIR}/cobalt.json" ]; then
-    echo "ERROR: No Cobalt project file found in ${PROJECT_ROOT_DIR}"
-    exit 2
-fi
-
 function main {
 
     case $1 in
 
         # One of the build targets
         clean|compile|deploy|package)
+            checkIfCobaltProjectFileExists
             build $*
             local exitCode=$?
             if [ ${exitCode} -eq 0 ]; then
@@ -24,12 +19,17 @@ function main {
             exit ${exitCode}
             ;;
 
-        "--clearcache")
+        "--clear-cache")
+            checkIfCobaltProjectFileExists
             clearcache
             ;;
 
         "--help")
             help
+            ;;
+
+        "--version")
+            echo "Cobalt 1.0"
             ;;
 
         *)
@@ -39,7 +39,16 @@ function main {
     esac
 }
 
-# Builds the build target (one of 'clean', 'compile', 'deploy' or 'package')
+# Checks if a Cobalt project file exists within the current directory. If it doesn't, then exit with exit code 2.
+function checkIfCobaltProjectFileExists {
+    # Check if the project root directory contains a Cobalt project file
+    if [ ! -f "${PROJECT_ROOT_DIR}/cobalt.json" ]; then
+        echo "ERROR: No Cobalt project file found in ${PROJECT_ROOT_DIR}"
+        exit 2
+    fi
+}
+
+# Builds the build target (one of 'clean', 'compile', 'deploy' or 'package').
 function build {
     # Build project cache, if necessary
     export COBALT_BIN_DIR PROJECT_ROOT_DIR PROJECT_CACHE_DIR; make -s --directory "${PROJECT_ROOT_DIR}" -f "${COBALT_BIN_DIR}/project.makefile"
@@ -47,21 +56,22 @@ function build {
     export COBALT_BIN_DIR; make -s -j --directory "${PROJECT_ROOT_DIR}" -f "${PROJECT_CACHE_DIR}/cobalt" $*
 }
 
-# Clears the project cache by deleting the project's cache directory
+# Clears the project cache by deleting the project's cache directory.
 function clearcache {
     echo "Clearing cache in ${PROJECT_CACHE_DIR}"
-    rm -fr ${PROJECT_CACHE_DIR}
+    rm -fr "${PROJECT_CACHE_DIR}"
     echo "Done"
 }
 
-# Shows the help message
+# Shows the help message.
 function help {
     echo "Usage: cobalt [OPTIONS...] BUILDTARGET"
     echo "Runs the Cobalt build tool with the specified target"
     echo ""
     echo "OPTIONS:"
-    echo "--help         Show this help and exit"
-    echo "--clearcache   Clears the cache"
+    echo "--clear-cache   Clear the cache"
+    echo "--help          Show this help and exit"
+    echo "--version       Show version and exit"
     echo ""
     echo "BUILDTARGET: Builds the specified target. Valid build targets are:"
     echo "  clean     Cleans up the project by removing the target directory"
