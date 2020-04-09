@@ -84,7 +84,7 @@ resources necessary to run the programs. The `src/test` directory maintains the 
 directory, but is intended for test programs to be run.
 
 When the targets are being built, a `target` directory is created, with a few folders to store intermediate artifacts.
-For instance, for each program being built, the `copybook-dependencies` directory contains a file containing a list with
+For instance, for each program being built, the `copybookdependencies` directory contains a file containing a list with
 copybook filenames on which the program depends. This is necessary in order to determine whether the source file should
 be recompiled. The `objects` subdirectory contains all compiled programs.
 
@@ -101,7 +101,7 @@ source files.
 
 # How to use `cobalt`?
 
-Cobalt currently has three built-in targets: `compile`, `package` and `clean`.
+Cobalt currently has four built-in targets: `compile`, `package`, `deploy` and `clean`.
 
 * `compile` compiles all source files.
 * `package` first compiles all source files, and then generates a package from the compiled files.
