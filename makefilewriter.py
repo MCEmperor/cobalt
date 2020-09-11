@@ -18,7 +18,7 @@ class MakefileWriter:
 		makefile_path = self.bin_path.joinpath("sources.makefile")
 		out_makefile_path = self.cache_dir.joinpath("cobalt")
 		with open(str(makefile_path), 'r') as makefile:
-			with open(str(out_makefile_path), 'a') as out_makefile:
+			with open(str(out_makefile_path), 'w') as out_makefile:
 				for line in makefile:
 					out_makefile.write(self._translate_line(line))
 
