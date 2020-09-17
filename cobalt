@@ -6,6 +6,8 @@ PROJECT_CACHE_DIR=$(${COBALT_BIN_DIR}/getcachedir.sh ${PROJECT_ROOT_DIR})
 
 function main {
 
+    require make python
+
     case $1 in
 
         # One of the build targets
@@ -37,6 +39,17 @@ function main {
             exit 2
             ;;
     esac
+}
+
+# Checks if the given dependencies are installed
+function require {
+    for program in $*; do
+        command -v ${program} &>/dev/null
+        if [ $? -ne 0 ]; then
+            echo "ERROR: Missing required dependency: ${program}"
+            exit 2
+        fi
+    done
 }
 
 # Checks if a Cobalt project file exists within the current directory. If it doesn't, then exit with exit code 2.
