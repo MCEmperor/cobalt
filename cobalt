@@ -17,6 +17,7 @@ function main {
 
         # One of the build targets
         compile|deploy|package)
+            buildProjectCache
             checkIfCobaltProjectFileExists
 
             if [ "$1" == "deploy" ]; then
@@ -33,7 +34,7 @@ function main {
 
         "--clear-cache")
             checkIfCobaltProjectFileExists
-            clearcache
+            clearCache
             ;;
 
         "--help")
@@ -76,16 +77,19 @@ function checkIfCobaltProjectFileExists {
     fi
 }
 
-# Builds the build target (one of 'clean', 'compile', 'deploy' or 'package').
-function build {
-    # Build project cache, if necessary
+# Build project cache, if necessary.
+function buildProjectCache {
     export COBALT_BIN_DIR PROJECT_ROOT_DIR PROJECT_CACHE_DIR; make -s --directory "${PROJECT_ROOT_DIR}" -f "${COBALT_BIN_DIR}/project.makefile"
+}
+
+# Builds the build target (one of 'compile', 'deploy' or 'package').
+function build {
     # Build the sources
     export COBALT_BIN_DIR; make -s -j --directory "${PROJECT_ROOT_DIR}" -f "${PROJECT_CACHE_DIR}/cobalt" $*
 }
 
 # Clears the project cache by deleting the project's cache directory.
-function clearcache {
+function clearCache {
     echo "Clearing cache in ${PROJECT_CACHE_DIR}"
     rm -fr "${PROJECT_CACHE_DIR}"
     echo "Done"
