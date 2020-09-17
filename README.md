@@ -18,31 +18,33 @@ configuration.
 
 A project file looks like this:
 
-    {
-        "projectName": "My Cobol Application",
-        "namespace": "org.example",
-        "compile": {
-            "options": "-x -Cr -D1 -Di -Dz -Zl -Zz -Z91",
-            "profiles": [
-                {
-                    "options": "-x -Ca -Cr -D1 -Di -Dz -Zl -Zz -Z91",
-                    "include": [
-                        "MyTerminalProgram",
-                        "AnotherTerminalProgram"
-                    ]
-                }
-            ],
-            "fd": true
-        },
-        "package": {
-            "filename": "test-cobol",
-            "name": "my-cobol-application",
-            "version": "1.0"
-        },
-        "deploy": {
-            "fingerprint": "git-commit-hash"
-        }
+```json
+{
+    "projectName": "My Cobol Application",
+    "namespace": "org.example",
+    "compile": {
+        "options": "-x -Cr -D1 -Di -Dz -Zl -Zz -Z91",
+        "profiles": [
+            {
+                "options": "-x -Ca -Cr -D1 -Di -Dz -Zl -Zz -Z91",
+                "include": [
+                    "MyTerminalProgram",
+                    "AnotherTerminalProgram"
+                ]
+            }
+        ],
+        "fd": true
+    },
+    "package": {
+        "filename": "test-cobol",
+        "name": "my-cobol-application",
+        "version": "1.0"
+    },
+    "deploy": {
+        "fingerprint": "git-commit-hash"
     }
+}
+```
 
 As you can see, its contents are just in JSON format.
 
@@ -53,7 +55,7 @@ namespace declaration is currently not used by the build tool, but may be used i
     * The `options` key declares the default compiler options used to compile programs.
     * `profiles` contains an array with compiler profiles for different programs to be compiled. Each element is an
         object containing the properties `options` and `include`. The `options` property defines an alternative set of
-        compiler options used to compile the programs defined in the `include` property, which is an array of strings, 
+        compiler options used to compile the programs defined in the `include` property, which is an array of strings,
         each one containing a program name.
     * The `fd` key is a boolean, and denotes whether *xfd* files should be generated.
 * The `package` property declares how the package should be made. Currently, only the `filename` property is used during
