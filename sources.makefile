@@ -30,7 +30,7 @@ vpath %.d $(COPYBOOK_DEPENDENCY_DIR)
 vpath % $(COPYBOOK_DIR)
 
 # Interpret the following targets as non-files
-.PHONY: compile package deploy clean .validatefingerprint
+.PHONY: compile package deploy .validatefingerprint
 
 compile: $(LOBJECTS) $(UOBJECTS)
 
@@ -38,13 +38,9 @@ package: compile
 	@echo Building package {{packageFilename}}
 	@$(CBLUTIL) -lib -o "$(TARGET_DIR)/{{packageFilename}}.acu" $(OBJECT_DIR)/*.acu
 
-deploy: .validatefingerprint clean compile
+deploy: .validatefingerprint compile
 	@echo "Building deploy-ready package {{packageFilename}}"
 	@$(CBLUTIL) -lib -c "$(shell $(COBALT_BIN_DIR)/fingerprint.sh $(FINGERPRINT_SUPPLIER))" -o "$(TARGET_DIR)/{{packageFilename}}.acu" $(OBJECT_DIR)/*.acu
-
-clean:
-	@echo "Deleting build directory"
-	@rm -fr target
 
 .validatefingerprint:
 	@$(COBALT_BIN_DIR)/validatefingerprint.sh $(FINGERPRINT_SUPPLIER)

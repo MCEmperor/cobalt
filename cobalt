@@ -10,9 +10,19 @@ function main {
 
     case $1 in
 
+        "clean")
+            clean
+            echo "Done"
+            ;;
+
         # One of the build targets
-        clean|compile|deploy|package)
+        compile|deploy|package)
             checkIfCobaltProjectFileExists
+
+            if [ "$1" == "deploy" ]; then
+                clean
+            fi
+
             build $*
             local exitCode=$?
             if [ ${exitCode} -eq 0 ]; then
@@ -39,6 +49,11 @@ function main {
             exit 2
             ;;
     esac
+}
+
+function clean {
+    echo "Deleting build directory"
+    rm -fr "${PROJECT_ROOT_DIR}/target"
 }
 
 # Checks if the given dependencies are installed
