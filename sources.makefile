@@ -38,7 +38,7 @@ package: compile
 	@echo Building package {{packageFilename}}
 	@$(CBLUTIL) -lib -o "$(TARGET_DIR)/{{packageFilename}}.acu" $(OBJECT_DIR)/*.acu
 
-deploy: .validatefingerprint compile
+deploy: compile
 	@echo "Building deploy-ready package {{packageFilename}}"
 	@$(CBLUTIL) -lib -c "$(shell $(COBALT_BIN_DIR)/fingerprint.sh $(FINGERPRINT_SUPPLIER))" -o "$(TARGET_DIR)/{{packageFilename}}.acu" $(OBJECT_DIR)/*.acu
 

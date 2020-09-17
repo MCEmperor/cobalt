@@ -10,21 +10,25 @@ function main {
 
     case $1 in
 
-        "clean")
+        clean)
             clean
             ready
             ;;
 
-        # One of the build targets
-        compile|deploy|package)
+        compile|package)
             requireCobaltProjectFileExists
             buildProjectCache
+            build $1
+            ready
+            ;;
 
-            if [ "$1" == "deploy" ]; then
-                clean
-            fi
-
-            build $*
+        # One of the build targets
+        deploy)
+            requireCobaltProjectFileExists
+            buildProjectCache
+            build .validatefingerprint 2>/dev/null \
+                && clean \
+                && build deploy
             ready
             ;;
 
