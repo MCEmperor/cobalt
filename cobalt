@@ -12,7 +12,7 @@ function main {
 
         "clean")
             clean
-            echo "Done"
+            ready
             ;;
 
         # One of the build targets
@@ -25,16 +25,13 @@ function main {
             fi
 
             build $*
-            local exitCode=$?
-            if [ ${exitCode} -eq 0 ]; then
-                echo "Done"
-            fi
-            exit ${exitCode}
+            ready
             ;;
 
         "--clear-cache")
             requireCobaltProjectFileExists
             clearCache
+            ready
             ;;
 
         "--help")
@@ -92,7 +89,13 @@ function build {
 function clearCache {
     echo "Clearing cache in ${PROJECT_CACHE_DIR}"
     rm -fr "${PROJECT_CACHE_DIR}"
-    echo "Done"
+}
+
+# Prints 'Done' if the previous command was successful.
+function ready {
+    if [ $? -eq 0 ]; then
+        echo "Done"
+    fi
 }
 
 # Shows the help message.
