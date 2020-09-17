@@ -82,7 +82,7 @@ function help {
     echo "Runs the Cobalt build tool with the specified target"
     echo ""
     echo "OPTIONS:"
-    echo "--clear-cache   Clear the cache"
+    echo "--clear-cache   Clear the cache of the current project"
     echo "--help          Show this help and exit"
     echo "--version       Show version and exit"
     echo ""
