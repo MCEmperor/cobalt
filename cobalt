@@ -17,8 +17,8 @@ function main {
 
         # One of the build targets
         compile|deploy|package)
+            requireCobaltProjectFileExists
             buildProjectCache
-            checkIfCobaltProjectFileExists
 
             if [ "$1" == "deploy" ]; then
                 clean
@@ -33,7 +33,7 @@ function main {
             ;;
 
         "--clear-cache")
-            checkIfCobaltProjectFileExists
+            requireCobaltProjectFileExists
             clearCache
             ;;
 
@@ -69,7 +69,7 @@ function require {
 }
 
 # Checks if a Cobalt project file exists within the current directory. If it doesn't, then exit with exit code 2.
-function checkIfCobaltProjectFileExists {
+function requireCobaltProjectFileExists {
     # Check if the project root directory contains a Cobalt project file
     if [ ! -f "${PROJECT_ROOT_DIR}/cobalt.json" ]; then
         echo "ERROR: No Cobalt project file found in ${PROJECT_ROOT_DIR}"
