@@ -6,7 +6,7 @@ PROJECT_CACHE_DIR=$(${COBALT_BIN_DIR}/getcachedir.sh ${PROJECT_ROOT_DIR})
 
 function main {
 
-    require make python
+    require make python3
 
     case $1 in
 
