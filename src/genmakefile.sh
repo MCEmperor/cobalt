@@ -2,7 +2,7 @@
 
 COBALT_BIN_DIR=$(dirname $(test -L "$0" && readlink "$0" || echo "$0"))
 PROJECT_ROOT_DIR=$1
-if [ "${PROJECT_ROOT_DIR}" == "" ]; then
+if [[ "${PROJECT_ROOT_DIR}" == "" ]]; then
     PROJECT_ROOT_DIR=$(pwd)
 fi
 PROJECT_CACHE_DIR=$(${COBALT_BIN_DIR}/getcachedir.sh ${PROJECT_ROOT_DIR})

@@ -62,7 +62,7 @@ function clean {
 function require {
     for program in $*; do
         command -v ${program} &>/dev/null
-        if [ $? -ne 0 ]; then
+        if [[ $? -ne 0 ]]; then
             echo "ERROR: Missing required dependency: ${program}"
             exit 2
         fi
@@ -72,7 +72,7 @@ function require {
 # Checks if a Cobalt project file exists within the current directory. If it doesn't, then exit with exit code 2.
 function requireCobaltProjectFileExists {
     # Check if the project root directory contains a Cobalt project file
-    if [ ! -f "${PROJECT_ROOT_DIR}/cobalt.json" ]; then
+    if [[ ! -f "${PROJECT_ROOT_DIR}/cobalt.json" ]]; then
         echo "ERROR: No Cobalt project file found in ${PROJECT_ROOT_DIR}"
         exit 2
     fi
@@ -97,7 +97,7 @@ function clearCache {
 
 # Prints 'Done' if the previous command was successful.
 function ready {
-    if [ $? -eq 0 ]; then
+    if [[ $? -eq 0 ]]; then
         echo "Done"
     fi
 }
