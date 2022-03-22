@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ln -s /opt/cobalt/cobalt /usr/local/bin/cobalt
