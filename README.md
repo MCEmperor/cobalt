@@ -2,19 +2,40 @@
 
 ## What is Cobalt?
 
-Cobalt is a build tool for Acucobol applications. Just like Maven for Java, but simpler. It can build COBOL source code,
-supporting different configurations per program.
-Cobalt is meant to make the COBOL build process more uniform.
+Cobalt is a build tool for ACUCOBOL applications. Just like Maven for Java, but simpler. It can build COBOL source code,
+supporting different configurations per program. Cobalt is meant to make the COBOL build process more uniform.
+
+## How to build Cobalt?
+
+Cobalt is built using the `Makefile` file within this repository. Currently, the building process only supports to make
+a Debian package. The build process uses [fpm](https://github.com/jordansissel/fpm) to build the Debian package, and fpm
+requires `ruby` and `gem`.
+
+In order to install all the dependencies necessary to build Cobalt, use the following:
+
+```bash
+apt-get update
+apt-get install -y make ruby gem
+gem install fpm
+```
+
+To build a Debian package, use `make package-debian`. The package will be located in the `target` directory.
 
 ## How to install Cobalt?
 
-Cobalt is built as a Linux tool. But it may as well run in Cygwin or MinGW environments. Cobalt depends on Python 3, so
-make sure this is installed. Furthermore, Cobalt uses Make internally.
+Cobalt is built as a Linux tool. But it may as well run in Cygwin or MinGW environments.
+
+In order to install Cobalt, make sure to get the Debian package file. Assuming the path to the package is
+`./cobalt.deb`, install Cobalt using the following:
+
+```bash
+apt-get update && apt-get install -y ./cobalt.deb
+```
 
 ## How does Cobalt work?
 
 Cobalt reads in a Cobalt project file as the build configuration, and then compiles the source code according to the
-configuration.
+configuration. Cobalt internally uses Make to decide which files must be built.
 
 A project file looks like this:
 
@@ -101,7 +122,7 @@ a `Makefile` is generated in some cache directory for the project (default `/tmp
 *project_dir_hash* is a hash associated with the directory of the project). Then Cobalt lets Make build the necessary
 source files.
 
-# How to use `cobalt`?
+# How to use Cobalt?
 
 Cobalt currently has four built-in targets: `compile`, `package`, `deploy` and `clean`.
 
