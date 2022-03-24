@@ -1,34 +1,47 @@
 PACKAGE_NAME := cobalt
 VERSION := 1.0.0
+DESCRIPTION := Cobalt - build tool for COBOL
+URL := https://github.com/MCEmperor/cobalt
+MAINTAINER := MC Emperor <dev@mcemperor.org>
 
 SOURCE_DIR := src
+BUILD_SOURCE_DIR := build
 TARGET_DIR := target
 
 APPLICATION_DIR := opt/cobalt
 SOURCE_FILES := $(wildcard ${SOURCE_DIR}/*)
-
-DPKG_SOURCE_META_DIR := build/DEBIAN
-DPKG_SOURCE_META_FILES := $(wildcard ${DPKG_SOURCE_META_DIR}/*)
-DPKG_TARGET_BASE_DIR := ${TARGET_DIR}/${PACKAGE_NAME}_${VERSION}
-DPKG_TARGET_FS_DIR := ${DPKG_TARGET_BASE_DIR}/${APPLICATION_DIR}
-DPKG_TARGET_FS_FILES := $(addprefix ${DPKG_TARGET_FS_DIR}/,$(notdir ${SOURCE_FILES}))
-DPKG_TARGET_META_DIR := ${DPKG_TARGET_BASE_DIR}/DEBIAN
-DPKG_TARGET_META_FILES := $(addprefix ${DPKG_TARGET_META_DIR}/,$(notdir $(wildcard ${DPKG_SOURCE_META_DIR}/*)))
+BUILD_SOURCE_FILES := $(wildcard ${BUILD_SOURCE_DIR}/*)
+TARGET_SOURCE_DIR := ${TARGET_DIR}/${SOURCE_DIR}
+TARGET_BUILD_DIR := ${TARGET_DIR}/${BUILD_SOURCE_DIR}
+TARGET_SOURCE_FILES := $(addprefix ${TARGET_SOURCE_DIR}/,$(notdir ${SOURCE_FILES}))
+TARGET_BUILD_FILES := $(addprefix ${TARGET_BUILD_DIR}/,$(notdir ${BUILD_SOURCE_FILES}))
 
 .PHONY : clean package-debian
 
-package-debian : ${DPKG_TARGET_FS_FILES} ${DPKG_TARGET_META_FILES}
+package-debian : ${TARGET_SOURCE_FILES} ${TARGET_BUILD_FILES}
 	@echo "Creating package ${PACKAGE_NAME}, version ${VERSION}"
-	@cd ${TARGET_DIR} && dpkg-deb --build --root-owner-group $(notdir ${DPKG_TARGET_BASE_DIR})
+	@fpm \
+		-s dir -t deb \
+		-p ${TARGET_DIR}/${PACKAGE_NAME}-${VERSION}.deb \
+		--name ${PACKAGE_NAME} \
+		--license mit \
+		--version ${VERSION} \
+		--architecture all \
+		--depends make --depends python3 \
+		--after-install ${TARGET_BUILD_DIR}/postinst \
+		--description "${DESCRIPTION}" \
+		--url "${URL}" \
+		--maintainer "${MAINTAINER}" \
+		${TARGET_SOURCE_DIR}/=/${APPLICATION_DIR}
 
 clean :
 	@echo "Cleaning target dir"
 	@rm -fr target
 
-${DPKG_TARGET_FS_DIR}/% : ${SOURCE_DIR}/%
-	@mkdir -p ${DPKG_TARGET_FS_DIR}
+${TARGET_SOURCE_DIR}/% : ${SOURCE_DIR}/%
+	@mkdir -p ${TARGET_SOURCE_DIR}
 	@cp $< $@
 
-${DPKG_TARGET_META_DIR}/% : ${DPKG_SOURCE_META_DIR}/%
-	@mkdir -p ${DPKG_TARGET_META_DIR}
+${TARGET_BUILD_DIR}/% : ${BUILD_SOURCE_DIR}/%
+	@mkdir -p ${TARGET_BUILD_DIR}
 	@cp $< $@

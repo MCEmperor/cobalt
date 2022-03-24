@@ -1,6 +1,0 @@
-Package: cobalt
-Version: 1.0
-Maintainer: MC Emperor
-Architecture: all
-Depends: make, python3
-Description: Cobalt - build tool for COBOL
