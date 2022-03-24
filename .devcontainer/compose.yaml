@@ -1,0 +1,9 @@
+services:
+
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ../:/src
+    command: tail -f /dev/null
