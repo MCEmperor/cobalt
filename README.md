@@ -15,7 +15,7 @@ In order to install all the dependencies necessary to build Cobalt, use the foll
 
 ```bash
 apt-get update
-apt-get install -y make ruby gem
+apt-get install -y binutils gem make ruby
 gem install fpm
 ```
 
@@ -89,17 +89,19 @@ it into the comment section of the package.
 
 The Cobalt build tool assumes a certain directory structure:
 
-    /
-    ├─ cobalt.json
-    └─ src/
-        ├─ main/
-        │   ├─ cobol/
-        │   │   └─ copybook/
-        │   └ resources/
-        └─ test/
-            ├─ cobol/
-            │   └─ copybook/
-            └─ resources/
+```none
+/
+├─ cobalt.json
+└─ src/
+    ├─ main/
+    │   ├─ cobol/
+    │   │   └─ copybook/
+    │   └ resources/
+    └─ test/
+        ├─ cobol/
+        │   └─ copybook/
+        └─ resources/
+```
 
 The project file is located in the root directory. The directory `src/main/cobol` contains all programs to be compiled.
 The `src/main/cobol/copybook` directory contains the copybooks. The `src/main/resources` directory contains all
