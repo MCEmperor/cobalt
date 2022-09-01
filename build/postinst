@@ -1,3 +1,8 @@
 #!/bin/bash
 
+cd /opt/cobalt
+
+chmod 644 *
+chmod +x cobalt ccbltr.sh fingerprint.sh genmakefile.sh getcachedir.sh validatefingerprint.sh
+
 ln -s /opt/cobalt/cobalt /usr/local/bin/cobalt
